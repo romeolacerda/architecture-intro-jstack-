@@ -1,0 +1,30 @@
+{
+  "name": "architecture-intro-jstack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc:watch": "tsc --watch",
+    "start": "node --watch dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@types/node": "^22.15.29",
+    "eslint": "^8.57.1",
+    "globals": "^16.2.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.821.0",
+    "@aws-sdk/client-ses": "^3.821.0",
+    "@aws-sdk/client-sqs": "^3.821.0",
+    "@aws-sdk/lib-dynamodb": "^3.821.0",
+    "fastify": "^5.3.3"
+  }
+}
