@@ -1,28 +1,30 @@
-import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
-import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Order } from "../entities/Order";
-import { DyanmoOrdersRepository } from "../repository/DynamoOrdersRepository";
-import { SQSGateway } from "../gateways/SQSGateway";
 import { SESGateway } from "../gateways/SESGataway";
+import { SQSGateway } from "../gateways/SQSGateway";
+import { DyanmoOrdersRepository } from "../repository/DynamoOrdersRepository";
 
 export class PlaceOrder {
-    async execute() {
+    constructor(
+        private readonly dyanmoOrdersRepository: DyanmoOrdersRepository,
+        private readonly sqsGateway: SQSGateway,
+        private readonly sesGateway: SESGateway,
+    ) { }
+
+    async execute(
+    ) {
         const customerEmail = "romeolacerdafarias@gmail.com";
         const amount = Math.ceil(Math.random() * 1000);
 
         const order = new Order(customerEmail, amount);
-        const dyanmoOrdersRepository = new DyanmoOrdersRepository();
-        const sqsGateway = new SQSGateway();
-        const sesGateway = new SESGateway();
         // Order on Db
-        await dyanmoOrdersRepository.create(order);
+        await this.dyanmoOrdersRepository.create(order);
 
         // Payment on Queue
-        await sqsGateway.publishMessage({ orderId: order.id });
+        await this.sqsGateway.publishMessage({ orderId: order.id });
 
         //confirmation email
-        await sesGateway.sendEmail({
-            from: "Roma <noreply@romeo.dev.br>",
+        await this.sesGateway.sendEmail({
+            from: "Romeo <noreply@romeo.dev.br>",
             to: [customerEmail],
             subject: `Pedido #${order.id} confirmed`,
             html: `
