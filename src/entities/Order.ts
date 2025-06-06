@@ -1,10 +1,12 @@
-import { randomUUID } from "node:crypto"
+import { randomUUID } from "node:crypto";
 
 export class Order {
-    public id: string
+    public id: string;
 
-    constructor(public email: string, public amount: number) {
-        this.id = randomUUID()
+    constructor(
+        public email: string,
+        public amount: number,
+    ) {
+        this.id = randomUUID();
     }
-
 }
