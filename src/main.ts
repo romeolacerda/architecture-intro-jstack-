@@ -7,14 +7,14 @@ import { SESGateway } from "./gateways/SESGataway";
 const app = fastify();
 
 app.post("/orders", async (request, reply) => {
-    const dyanmoOrdersRepository = new DyanmoOrdersRepository()
-    const sqsGateway = new SQSGateway()
-    const sesGateway = new SESGateway()
+    const dyanmoOrdersRepository = new DyanmoOrdersRepository();
+    const sqsGateway = new SQSGateway();
+    const sesGateway = new SESGateway();
 
     const placeOrder = new PlaceOrder(
         dyanmoOrdersRepository,
         sqsGateway,
-        sesGateway
+        sesGateway,
     );
     const { orderId } = await placeOrder.execute();
 
