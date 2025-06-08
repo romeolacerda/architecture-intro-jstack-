@@ -3,9 +3,7 @@ import {
     IEmailGateway,
     ISendEmailParams,
 } from "../interfaces/gateways/IEmailGateway";
-import { Injectable } from "../di/Injectable";
 
-@Injectable()
 export class SESGateway implements IEmailGateway {
     private client = new SESClient({ region: "us-east-2" });
 

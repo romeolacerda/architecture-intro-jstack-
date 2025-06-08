@@ -1,17 +1,14 @@
-import { Injectable } from "../di/Injectable";
+import { Inject } from "../di/Inject";
 import { Order } from "../entities/Order";
-import { ConsoleLogGateway } from "../gateways/ConsoleLOgGateway";
-import { SESGateway } from "../gateways/SESGataway";
-import { SQSGateway } from "../gateways/SQSGateway";
-import { DyanmoOrdersRepository } from "../repository/DynamoOrdersRepository";
+import { IEmailGateway } from "../interfaces/gateways/IEmailGateway";
+import { IQueueGateway } from "../interfaces/gateways/IQueueGateway";
+import { IOrdersRepository } from "../interfaces/repositories/IOrdersRepository";
 
-@Injectable()
 export class PlaceOrder {
     constructor(
-        private readonly dyanmoOrdersRepository: DyanmoOrdersRepository,
-        private readonly queueGateway: SQSGateway,
-        private readonly emailGateway: SESGateway,
-        private readonly logService: ConsoleLogGateway
+        @Inject('EmailGateway') private readonly emailGateway: IEmailGateway,
+        @Inject('OrdersRepository') private readonly ordersRepository: IOrdersRepository,
+        @Inject('QueueGateway') private readonly queueGateway: IQueueGateway,
     ) { }
 
     async execute() {
@@ -20,7 +17,7 @@ export class PlaceOrder {
 
         const order = new Order(customerEmail, amount);
 
-        await this.dyanmoOrdersRepository.create(order);
+        await this.ordersRepository.create(order);
 
         await this.queueGateway.publishMessage({ orderId: order.id });
 
@@ -33,9 +30,6 @@ export class PlaceOrder {
                         <p>Thanks!</p>`,
         });
 
-        await this.logService.log({
-            msg: 'log here'
-        })
 
         return { orderId: order.id };
     }

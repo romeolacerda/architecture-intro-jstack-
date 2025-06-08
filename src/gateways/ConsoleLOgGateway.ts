@@ -1,7 +1,5 @@
-import { Injectable } from "../di/Injectable";
 import { ILogGateway } from "../interfaces/gateways/ILogGateway";
 
-@Injectable()
 export class ConsoleLogGateway implements ILogGateway {
     async log(logMessage: Record<string, unknown>): Promise<void> {
         console.log('Log: service')
