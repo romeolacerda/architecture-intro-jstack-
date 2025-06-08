@@ -1,5 +1,5 @@
+import { Constructor } from "../types/utils"
 
-type Constructor<T> = new (...args: any[]) => T
 
 
 export class Registry{
@@ -35,7 +35,11 @@ export class Registry{
             throw new Error(`${token} has not been found in Registry`)
         }
 
-        return new impl()
+        const paramTypes: Constructor<any>[] = Reflect.getMetadata('design:paramtypes', impl) ?? []
+
+        const dependencies = paramTypes.map(constructor => this.resolve(constructor))
+
+        return new impl(...dependencies)
     }
 
 }

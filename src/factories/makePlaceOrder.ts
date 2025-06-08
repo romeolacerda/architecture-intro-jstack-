@@ -4,9 +4,9 @@ import { makeSESGateway } from "./makeSESGateway";
 import { makeSQSGateway } from "./makeSQSGateway";
 
 export function makePlaceOrder() {
-    return new PlaceOrder(
-        makeDyanmoOrdersRepository(),
-        makeSQSGateway(),
-        makeSESGateway()
-    )
+    // return new PlaceOrder(
+    //     // makeDyanmoOrdersRepository(),
+    //     makeSQSGateway(),
+    //     makeSESGateway()
+    // )
 }
